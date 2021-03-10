@@ -61,10 +61,35 @@ router.post('/', (req, res) => {
         });
 });
 
+// login route
+router.post('/login', (req, res) => {
+  // query user table for email entered by the user
+  User.findOne({
+    where: {
+      email: req.body.email
+    }
+  })
+  .then(dbUserData => {
+    // if user email not found, send message
+    if (!dbUserData) {
+      res.status(400).json({ message: 'No user with that email address!' })
+      return
+    }
+    // if user email found, next we verify user password matches with the checkPassword function created in the user modal, passing in req.body.password
+    const  validPassword = dbUserData.checkPassword(req.body.password)
+    if (!validPassword) {
+      res.status(400).json({ message: 'Incorrect Password!' })
+      return
+    }
+    res.json({ user: dbUserData, message: 'You are now logged in!'})
+  })
+})
+
 // Put /api/users/1 - for updating existing data
 router.put('/:id', (req, res) => {
     // user req.body to provide new data we want to use and update with req.params.id
     User.update(req.body, {
+      individualHooks: true,
       where: {
         id: req.params.id
       }
