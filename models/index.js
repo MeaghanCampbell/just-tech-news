@@ -2,6 +2,7 @@
 
 const User = require('./User')
 const Post = require('./Post')
+const Vote = require('./Vote')
 
 // create associations - user can have many posts
 User.hasMany(Post, {
@@ -14,4 +15,38 @@ Post.belongsTo(User, {
     foreignKey: 'user_id'
 })
 
-module.exports = { User, Post }
+// allow user to query post modals in the context of a vote
+User.belongsToMany(Post, {
+    through: Vote,
+    as: 'voted_posts',
+    foreignKey: 'user_id'
+})
+
+// allow post to query user modals in context of vote
+Post.belongsToMany(User, {
+    through: Vote,
+    as: 'voted_posts',
+    foreignKey: 'post_id'
+})
+
+// connect vote and user
+Vote.belongsTo(User, {
+    foreignKey: 'user_id'
+});
+  
+// connect vote and post
+Vote.belongsTo(Post, {
+    foreignKey: 'post_id'
+});
+  
+// connect user and vote
+User.hasMany(Vote, {
+    foreignKey: 'user_id'
+});
+  
+// connect post and vote
+Post.hasMany(Vote, {
+    foreignKey: 'post_id'
+});
+
+module.exports = { User, Post, Vote }
