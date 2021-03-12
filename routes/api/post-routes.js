@@ -1,7 +1,7 @@
 // packages and models we need to create the express.js API endpoints
 const router = require('express').Router();
 // included user here because we need user data for posts
-const { Post, User, Vote } = require('../../models');
+const { Post, User, Vote, Comment } = require('../../models');
 
 // for special sequelize functions so when we vote on a post we see post info & we also get total vote count
 const sequelize = require('../../config/connection');
@@ -24,10 +24,19 @@ router.get('/', (req, res) => {
       order: [['created_at', 'DESC']],
       // experssed as an array of objects
       include: [
-          {
-              model: User,
-              attributes: ['username']
+        // include the Comment model here:
+        {
+          model: Comment,
+          attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+          include: {
+            model: User,
+            attributes: ['username']
           }
+        },
+        {
+          model: User,
+          attributes: ['username']
+        }
       ]
     })
     // promise that captures the esponse from the database call

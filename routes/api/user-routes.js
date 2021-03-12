@@ -8,7 +8,7 @@
 
 // using express.js router to help keep the routes organized
 const router = require('express').Router()
-const { User, Post, Vote } = require('../../models')
+const { User, Post, Vote, Comment } = require('../../models')
 
 // Get /api/users
 router.get('/', (req, res) => {
@@ -34,13 +34,20 @@ router.get('/:id', (req, res) => {
             id: req.params.id
         },
         include: [
-          // get list of posts that user has created
           {
             model: Post,
             attributes: ['id', 'title', 'post_url', 'created_at']
           },
+          // include the Comment model here:
           {
-            // get data regarding which posts a user has voted on
+            model: Comment,
+            attributes: ['id', 'comment_text', 'created_at'],
+            include: {
+              model: Post,
+              attributes: ['title']
+            }
+          },
+          {
             model: Post,
             attributes: ['title'],
             through: Vote,
