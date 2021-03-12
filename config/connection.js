@@ -4,9 +4,10 @@ const Sequelize = require('sequelize')
 // dont need this to be given a variable name as we won't use it again
 require('dotenv').config()
 
-// create connection to database and use dotenv file to hold credentials
+// need to use let not const here
 let sequelize;
 
+// create connection to database and use dotenv file to hold credentials
 if (process.env.JAWSDB_URL) {
 // jaws db to host remote database on heroku
   sequelize = new Sequelize(process.env.JAWSDB_URL);
