@@ -3,6 +3,7 @@ const routes = require('./routes')
 const sequelize = require('./config/connection')
 
 const app = express()
+// dynamic port number - making it heroku compatible
 const PORT = process.env.PORT || 3001
 
 app.use(express.json())
