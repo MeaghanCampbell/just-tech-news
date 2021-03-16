@@ -1,12 +1,22 @@
 const express = require('express')
-const routes = require('./routes')
+const routes = require('./controllers')
 const sequelize = require('./config/connection')
+// make front end assets available to client server
+const path = require('path')
 
 const app = express()
 const PORT = process.env.PORT || 3001
 
+// set up handlebars.js as app's template engine of choice
+const exphbs = require('express-handlebars')
+const hbs = exphbs.create({})
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+//express.static is a middle ware function to take all contents of a folder and serve as static assets, useful for front end assets
+app.use(express.static(path.join(__dirname, 'public')))
 
 // turn on routes
 app.use(routes)
