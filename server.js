@@ -7,6 +7,27 @@ const path = require('path')
 const app = express()
 const PORT = process.env.PORT || 3001
 
+// express-session and sequelize store to track user sessions - setup
+const session = require('express-session');
+
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+
+// session object and connect session to our sequelize database
+const sess = {
+    // secret hash stored in .env file
+    secret: 'Super secret secret',
+    // if we want to add options to cookies we can add here
+    cookie: {},
+    resave: false,
+    saveUninitialized: true,
+    store: new SequelizeStore({
+        db: sequelize
+    })
+}
+
+// pass sess object into session
+app.use(session(sess));
+
 // set up handlebars.js as app's template engine of choice
 const exphbs = require('express-handlebars')
 const hbs = exphbs.create({})

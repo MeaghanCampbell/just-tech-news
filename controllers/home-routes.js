@@ -2,7 +2,9 @@ const router = require('express').Router()
 const sequelize = require('../config/connection')
 const { Post, User, Comment } = require('../models')
 
+// routes that render views from handleboars - renders homepage
 router.get('/', (req, res) => {
+  console.log(req.session);
     // mimics what we will get from sequelize
     Post.findAll({
         attributes: [
@@ -42,5 +44,17 @@ router.get('/', (req, res) => {
         res.status(500).json(err);
     });
 })
+
+// render login page - this page doesn't need varibales so we don't need a second argument like above
+router.get('/login', (req, res) => {
+  // check for a session and redirect to homepage if one exists
+  if (req.session.loggedIn) {
+    res.redirect('/');
+    return;
+  }
+
+  res.render('login');
+});
+
 
 module.exports = router
