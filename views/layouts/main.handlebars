@@ -15,8 +15,9 @@
         <a href="/">Just Tech News</a>
       </h1>
       <nav>
-        <!-- only show login button to users not logged in, and visa versa -->
+      <!-- only show login button to users not logged in, and visa versa -->
         {{#if loggedIn}}
+        <a href="/dashboard">dashboard</a>
         <button id="logout" class="btn-no-style">logout</button>
         {{else}}
         <a href="/login">login</a>

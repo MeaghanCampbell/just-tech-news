@@ -1,3 +1,5 @@
+//this file is for all homepage related views
+
 const router = require('express').Router()
 const sequelize = require('../config/connection')
 const { Post, User, Comment } = require('../models')

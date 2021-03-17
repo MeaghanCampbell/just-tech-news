@@ -49,7 +49,7 @@ async function loginFormHandler(event) {
   
       if (response.ok) {
           // go to homepage
-        document.location.replace('/');
+        document.location.replace('/dashboard');
       } else {
         alert(response.statusText);
       }
