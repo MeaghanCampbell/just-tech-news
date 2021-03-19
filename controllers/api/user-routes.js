@@ -9,6 +9,7 @@
 // using express.js router to help keep the routes organized
 const router = require('express').Router()
 const { User, Post, Vote, Comment } = require('../../models')
+const withAuth = require('../../utils/auth')
 
 // Get /api/users
 router.get('/', (req, res) => {
